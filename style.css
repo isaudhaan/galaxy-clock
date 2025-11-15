@@ -1,4 +1,4 @@
-/* Reset */
+/* RESET */
 * {
 	margin: 0;
 	padding: 0;
@@ -9,7 +9,6 @@ html, body {
 	height: 100%;
 }
 
-/* Space / Galaxy background */
 body {
 	font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 	color: #fff;
@@ -17,17 +16,18 @@ body {
 	overflow: hidden;
 }
 
-/* Main hero container */
+/* FULLSCREEN CENTERING */
 .hero {
 	position: relative;
 	width: 100%;
-	min-height: 100vh;
+	height: 100vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	overflow: hidden;
 }
 
-/* Star layers for parallax effect */
+/* PARALLAX STAR LAYERS */
 .stars,
 .stars2,
 .stars3 {
@@ -40,6 +40,7 @@ body {
 	background-size: 200px 200px;
 	opacity: 0.4;
 	pointer-events: none;
+	z-index: 1;
 }
 
 .stars {
@@ -67,117 +68,126 @@ body {
 }
 
 @keyframes driftStars {
-	from {
-		transform: translate3d(0, 0, 0);
-	}
-	to {
-		transform: translate3d(-25%, -25%, 0);
-	}
+	from { transform: translate3d(0, 0, 0); }
+	to { transform: translate3d(-25%, -25%, 0); }
 }
 
-/* Clock container */
+/* CLOCK + DATE CONTAINER */
 .container {
 	position: relative;
-	z-index: 1;
-	width: 90%;
-	max-width: 520px;
-	padding: 24px;
+	z-index: 5;
+	width: 100%;
+	max-width: 950px;     /* <-- FIX: Wider so digits fit */
+	padding: 20px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
-/* Glassy clock card */
+/* GLOW GLASS CLOCK BOX */
 .clock {
 	width: 100%;
-	padding: 28px 32px;
-	border-radius: 24px;
-	background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(17, 24, 39, 0.6));
-	border: 1px solid rgba(129, 140, 248, 0.4);
+	padding: 40px 50px;   /* <-- FIX: More padding */
+	border-radius: 35px;
+
+	background: linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(17, 24, 39, 0.65));
+	border: 1px solid rgba(129, 140, 248, 0.45);
+
 	box-shadow:
-		0 0 40px rgba(56, 189, 248, 0.35),
-		0 0 80px rgba(129, 140, 248, 0.4);
+		0 0 50px rgba(56, 189, 248, 0.45),
+		0 0 120px rgba(129, 140, 248, 0.55);
+
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 18px;
-	backdrop-filter: blur(18px);
+
+	gap: 50px;   /* <-- FIX: spacing between HRS : MIN : SEC */
+
+	backdrop-filter: blur(20px);
 	position: relative;
 	overflow: hidden;
 }
 
-/* Faint glow halo behind card */
 .clock::before {
 	content: "";
 	position: absolute;
 	width: 220%;
 	height: 220%;
-	background: radial-gradient(circle at 20% 0, rgba(96, 165, 250, 0.25), transparent 55%),
-	            radial-gradient(circle at 80% 100%, rgba(236, 72, 153, 0.25), transparent 55%);
+	background: radial-gradient(circle at 20% 0, rgba(96,165,250,0.25), transparent 55%),
+	            radial-gradient(circle at 80% 100%, rgba(236,72,153,0.25), transparent 55%);
 	z-index: -1;
 }
 
-/* Clock text styling */
+/* TIME DIGITS */
 .clock span {
-	font-size: clamp(3.4rem, 6vw, 4.4rem);
-	min-width: 86px;
+	font-size: clamp(3.8rem, 6vw, 4.8rem);
+	min-width: 110px;   /* <-- FIX: digit width */
 	text-align: center;
 	font-weight: 700;
 	letter-spacing: 0.08em;
-	position: relative;
 	color: #e5edff;
 	text-shadow:
-		0 0 6px rgba(191, 219, 254, 0.8),
-		0 0 18px rgba(59, 130, 246, 0.9),
-		0 0 40px rgba(56, 189, 248, 0.85);
+		0 0 6px rgba(191,219,254,0.8),
+		0 0 18px rgba(59,130,246,0.9),
+		0 0 40px rgba(56,189,248,0.85);
 }
 
-/* Colon style */
+/* COLONS */
 .clock .colon {
-	min-width: auto;
-	width: auto;
-	padding: 0 2px;
-	font-size: clamp(3.2rem, 5vw, 4rem);
-	color: rgba(191, 219, 254, 0.75);
+	padding: 0 6px;
+	font-size: clamp(3rem, 5vw, 4rem);
+	color: rgba(191,219,254,0.75);
 	text-shadow:
-		0 0 8px rgba(129, 140, 248, 0.8),
-		0 0 16px rgba(79, 70, 229, 0.7);
+		0 0 8px rgba(129,140,248,0.8),
+		0 0 16px rgba(79,70,229,0.7);
 }
 
-/* Labels under hours/minutes/seconds */
+/* LABELS UNDER DIGITS */
 .clock span::after {
 	display: block;
 	font-size: 0.75rem;
 	margin-top: 8px;
 	letter-spacing: 0.25em;
-	color: rgba(148, 163, 184, 0.9);
-	text-shadow: none;
+	color: rgba(148,163,184,0.9);
 }
 
-/* Individual labels */
-#hrs::after {
-	content: "HOURS";
+#hrs::after { content: "HOURS"; }
+#min::after { content: "MINUTES"; }
+#sec::after { content: "SECONDS"; }
+
+/* DATE BELOW CLOCK */
+.date-text {
+	margin-top: 22px;
+	text-align: center;
+	font-size: 1.4rem;
+	letter-spacing: 0.08em;
+	color: rgba(229,237,255,0.9);
+	text-shadow:
+		0 0 6px rgba(129,140,248,0.6),
+		0 0 18px rgba(59,130,246,0.9);
 }
 
-#min::after {
-	content: "MINUTES";
-}
+/* MOBILE RESPONSIVE */
+@media (max-width: 600px) {
+	.container { max-width: 100%; }
 
-#sec::after {
-	content: "SECONDS";
-}
-
-/* Responsive tweaks */
-@media (max-width: 480px) {
 	.clock {
-		padding: 20px 18px;
-		gap: 12px;
+		padding: 25px 20px;
+		gap: 20px;
+		border-radius: 22px;
 	}
 
 	.clock span {
-		min-width: 72px;
-		letter-spacing: 0.06em;
+		min-width: 70px;
+		font-size: 2.8rem;
+	}
+	.colon {
+		font-size: 2.5rem;
 	}
 
-	.clock span::after {
-		letter-spacing: 0.18em;
-		font-size: 0.68rem;
+	.date-text {
+		font-size: 1rem;
 	}
 }
