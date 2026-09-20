@@ -14,14 +14,15 @@ body {
 	font-family: 'Orbitron', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 	color: #fff;
 	background: radial-gradient(circle at 20% 20%, #342b7a 0, #050316 40%, #01000a 100%);
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 /* FULLSCREEN CENTERING */
 .hero {
 	position: relative;
 	width: 100%;
-	height: 100vh;
+	min-height: 100vh;
+	min-height: 100svh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -83,7 +84,6 @@ body {
 	position: relative;
 	z-index: 5;
 	width: 100%;
-	width: 100%;
 	max-width: 100%;
 	/* <-- FIX: Fluid width */
 	padding: 20px;
@@ -96,7 +96,6 @@ body {
 
 /* GLOW GLASS CLOCK BOX */
 .clock {
-	width: 100%;
 	width: 100%;
 	max-width: 950px;
 	padding: clamp(20px, 4vw, 40px) clamp(20px, 5vw, 50px);
@@ -114,12 +113,13 @@ body {
 	align-items: center;
 	justify-content: center;
 
-	gap: clamp(10px, 4vw, 50px);
+	gap: clamp(4px, 2vw, 32px);
 	/* <-- FIX: Fluid spacing */
 
 	backdrop-filter: blur(20px);
 	position: relative;
 	overflow: hidden;
+	transition: transform 180ms ease-out;
 }
 
 .clock::before {
@@ -150,6 +150,9 @@ body {
 
 /* COLONS */
 .clock .colon {
+	min-width: 0;
+	align-self: flex-start;
+	animation: pulseColon 2s ease-in-out infinite;
 	padding: 0 6px;
 	font-size: clamp(2rem, 5vw, 4rem);
 	/* <-- FIX: Smaller minimum font size */
@@ -199,21 +202,109 @@ body {
 	}
 
 	.clock {
-		padding: 25px 20px;
-		gap: 20px;
+		padding: 25px 12px;
+		gap: 4px;
 		border-radius: 22px;
 	}
 
 	.clock span {
-		min-width: 70px;
-		font-size: 2.8rem;
+		min-width: 0;
+		font-size: clamp(1.5rem, 7vw, 2.8rem);
 	}
 
-	.colon {
-		font-size: 2.5rem;
+	.clock .colon {
+		font-size: clamp(1.5rem, 7vw, 2.8rem);
+		padding: 0 2px;
+	}
+
+	.clock span::after {
+		font-size: 0.5rem;
+		letter-spacing: 0.1em;
 	}
 
 	.date-text {
 		font-size: 1rem;
+	}
+}
+
+.hero::before {
+	content: '';
+	position: absolute;
+	inset: -30%;
+	background: radial-gradient(ellipse at 30% 40%, #7042bc55, transparent 45%),
+		radial-gradient(ellipse at 70% 65%, #0891b244, transparent 40%);
+	animation: nebulaDrift 24s ease-in-out infinite alternate;
+	pointer-events: none;
+}
+
+.clock-toolbar {
+	width: 100%;
+	max-width: 950px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 20px;
+	font-size: 0.65rem;
+	letter-spacing: 0.15em;
+}
+
+.local-label { color: #b6c6e6; }
+.local-label i {
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	margin-right: 8px;
+	border-radius: 50%;
+	background: #7de5de;
+	box-shadow: 0 0 12px #7de5de;
+}
+
+button {
+	font: inherit;
+	color: #c6d7f6;
+	background: #13172e;
+	border: 1px solid #6978aa;
+	border-radius: 20px;
+	padding: 10px 14px;
+	min-height: 44px;
+	cursor: pointer;
+	transition: background 180ms, box-shadow 180ms;
+}
+button:hover, button[aria-pressed='true'] {
+	background: #30355c;
+	box-shadow: 0 0 18px #818cf844;
+}
+button:focus-visible { outline: 2px solid #9debf5; outline-offset: 4px; }
+.clock span { font-variant-numeric: tabular-nums; }
+.seconds-track {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background: #818cf81a;
+}
+#seconds-progress {
+	height: 100%;
+	background: linear-gradient(90deg, #818cf8, #67e8f9, #e9b8ff);
+	box-shadow: 0 0 14px #67e8f9;
+	transform-origin: left;
+}
+.timezone {
+	margin-top: 12px;
+	color: #a8badb;
+	font-size: 0.7rem;
+	letter-spacing: 0.18em;
+}
+@keyframes pulseColon { 50% { opacity: 0.35; } }
+@keyframes nebulaDrift {
+	from { transform: translate3d(-3%, -2%, 0) rotate(-8deg); }
+	to { transform: translate3d(3%, 2%, 0) rotate(8deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after {
+		animation: none !important;
+		transition: none !important;
 	}
 }
